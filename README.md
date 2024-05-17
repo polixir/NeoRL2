@@ -57,6 +57,19 @@ env.get_done_func(done_func)
 env.set_done_func(done_func)
 ```
 
+You can use the following environments now:
+
+
+| Env Name             | observation shape | action shape | have done | max timesteps |
+| -------------------- | ----------------- | ------------ | --------- | ------------- |
+| Pipeline             | 52                | 1            | False     | 1000          |
+| Simglucose           | 31                | 1            | True      | 480           |
+| RocketRecovery       | 7                 | 2            | True      | 500           |
+| RandomFrictionHopper | 13                | 3            | True      | 1000          |
+| DMSD                 | 6                 | 2            | False     | 100           |
+| Fusion               | 15                | 6            | False     | 100           |
+| SafetyHalfCheetah    | 18                | 6            | False     | 1000          |
+
 ## Data in NeoRL2
 
 In NeoRL2, training data and validation data returned by `get_dataset()` function are `dict` with  the same format:
