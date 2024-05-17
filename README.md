@@ -1,93 +1,88 @@
 # NeoRL2
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://licensebuttons.net/l/by/3.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
+The NEORL2 repository is an extension of the offline reinforcement learning benchmark [NeoRL](https://github.com/polixir/NeoRL). The NEORL2 repository contains datasets for training and corresponding environments for testing the trained policies. The current datasets are collected from seven open-source environments: Pipeline, Simglucose, RocketRecovery, RandomFrictionHopper, DMSD, Fusion and SafetyHalfCheetah tasks. We perform online training using reinforcement learning algorithms or PID policies on these tasks and then select suboptimal policies with returns ranging from 50% to 80% of the expert's return to generate offline datasets for each task. These suboptimal policy-sampled datasets better align with real-world task scenarios compared to random or expert policy datasets.
 
-## Getting started
+## Install NeoRL2 interface
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+NeoRL2 interface can be installed as follows:
 
 ```
-cd existing_repo
-git remote add origin https://jg.gitlab.polixir.site/polixir/neorl2.git
-git branch -M main
-git push -uf origin main
+git clone https://agit.ai/Polixir/neorl2.git
+cd neorl
+pip install -e .
 ```
 
-## Integrate with your tools
+After installation, Pipeline、Simglucose、RocketRecover、DMSD and Fusion environments will be available. However, the "RandomFrictionHopper" and "SafetyHalfCheetah" tasks rely on MuJoCo. If you need to use these two environments, it is necessary to obtain a [license](https://www.roboti.us/license.html) and follow the setup instructions, and then run:
 
-- [ ] [Set up project integrations](https://jg.gitlab.polixir.site/polixir/neorl2/-/settings/integrations)
+```
+pip install -e .[mujoco]
+```
 
-## Collaborate with your team
+## Using NeoRL2
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+NeoRL2 uses the [OpenAI Gym](https://github.com/openai/gym) API. Tasks can be created as follows:
 
-## Test and Deploy
+```
+import neorl2
+import gymnasium as gym
 
-Use the built-in continuous integration in GitLab.
+# Create an environment
+env = gym.make("Pipeline")
+env.reset()
+env.step(env.action_space.sample())
+```
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+After creating the environment, you can use the `get_dataset()` function to obtain training data and validation data:
 
-***
+```
+train_data, val_data = env.get_dataset()
+```
 
-# Editing this README
+Each environment supports setting and getting the reward function and done function of the environment, which is very useful for adjusting the environment settings when needed.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+```
+# Set reward function
+env.set_reward_func(reward_func)
 
-## Suggestions for a good README
+# Get reward function
+env.get_reward_func(reward_func)
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+# Set done function
+env.get_done_func(done_func)
 
-## Name
-Choose a self-explaining name for your project.
+# Get done function
+env.set_done_func(done_func)
+```
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+## Data in NeoRL2
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+In NeoRL2, training data and validation data returned by `get_dataset()` function are `dict` with  the same format:
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+- `obs`: An <i> N by observation dimensional array </i> of current step's observation.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+- `next_obs`: An <i> N by observation dimensional array </i> of next step's observation.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+- `action`: An <i> N by action dimensional array </i> of actions.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+- `reward`: An <i> N dimensional array of rewards</i>.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+- `done`: An <i> N dimensional array of episode termination flags</i>.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+- `index`: An <i> trajectory number-dimensional array</i>. The numbers in index indicate the beginning of trajectories.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+## Reference
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+**Simglucose**: Jinyu Xie. Simglucose v0.2.1 (2018) [Online]. Available: https://github.com/jxx123/simglucose. Accessed on: 5-17-2024. [code](https://github.com/jxx123/simglucose)
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+**DMSD**: Char, Ian, et al. "Correlated Trajectory Uncertainty for Adaptive Sequential Decision Making." *NeurIPS 2023 Workshop on Adaptive Experimental Design and Active Learning in the Real World*. 2023. [paper](https://arxiv.org/abs/2307.05891) [code](https://github.com/IanChar/GPIDE/tree/main)
 
-## License
-For open source projects, say how it is licensed.
+**MuJoCo**: Todorov E, Erez T, Tassa Y. "Mujoco: A Physics Engine for Model-based Control." Proceedings of the 2012 IEEE/RSJ International Conference on Intelligent Robots and Systems, pp. 5026-5033, 2012. [paper](https://ieeexplore.ieee.org/abstract/document/6386109) [website](https://gym.openai.com/envs/#mujoco)
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+**Gym**: Brockman, Greg, et al. "Openai gym." *arXiv preprint arXiv:1606.01540* (2016). [paper](https://arxiv.org/abs/1606.01540) [code](https://github.com/openai/gym)
+
+## Licenses
+
+All datasets are licensed under the [Creative Commons Attribution 4.0 License (CC BY)](https://creativecommons.org/licenses/by/4.0/), and code is licensed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html).
