@@ -255,7 +255,8 @@ class DoubleMassSpringDamperEnv(Env):
         return self._targets[np.min([self.t, self._max_episode_steps - 1])]
     
     def set_target(self, target):
-        self._targets[np.min([self.t, self._max_episode_steps - 1])] = target
+        # self._targets[np.min([self.t, self._max_episode_steps - 1])] = target
+        self._targets = np.full(self._targets.shape, target)
 
     @property
     def iterm(self) -> float:

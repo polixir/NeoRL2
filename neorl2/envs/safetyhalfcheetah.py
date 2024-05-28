@@ -397,7 +397,7 @@ class SafetyHalfCheetahEnv(HalfCheetahEnv,Env):
             
         return observation, reward, terminated, truncated, info
     
-    def reset(self, seed=None):
+    def reset(self, seed=None, **kwargs): 
         self.seed(seed)
         observation, info = super().reset(seed=seed)
         self.pre_observation = observation
