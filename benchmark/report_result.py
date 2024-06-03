@@ -28,8 +28,8 @@ for task in domains:
     env = gym.make(task)
     train_data,val_data = env.get_dataset()
     train_nums = np.logical_or( np.bool_(train_data["done"]),np.bool_(train_data["truncated"])).sum()
-    train_data_reward = np.sum(train_data["reward"]/train_nums)
-    train_data_score = env.get_normalized_score(train_data_reward/train_nums)
+    train_data_reward = np.sum(train_data["reward"])/train_nums
+    train_data_score = env.get_normalized_score(train_data_reward)
     
     task_reward.append(train_data_reward)
     task_score.append(train_data_score)
