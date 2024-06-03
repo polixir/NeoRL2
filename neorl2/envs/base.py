@@ -92,6 +92,13 @@ class Env(gym.Env):
             val_traj_num = int(traj_num/4)
             val_dataset,   val_samples   = get_dataset_traj_num(val_dataset, val_traj_num) 
         
+        if self.spec.id == "Fusion" and traj_num is None:
+            traj_num = 20
+        if traj_num != None:
+            train_dataset, train_samples = get_dataset_traj_num(train_dataset, traj_num) 
+            val_traj_num = int(traj_num/4)
+            val_dataset,   val_samples   = get_dataset_traj_num(val_dataset, val_traj_num) 
+        
         return train_dataset, val_dataset
     
     def set_reward_func(self, reward_func):
