@@ -37,6 +37,8 @@ for task in domains:
 for file_path in logs_files:
     if "bc_model" in file_path:
         continue
+    if "old" in file_path:
+        continue
     task = os.path.split(os.path.split(file_path)[0])[1]
     domain, algo = task.split("-")
     log = pd.read_csv(file_path)
@@ -54,6 +56,8 @@ df = pd.DataFrame(index=domains, columns=algos)
 
 for file_path in logs_files:
     if "bc_model" in file_path:
+        continue
+    if "old" in file_path:
         continue
     task = os.path.split(os.path.split(file_path)[0])[1]
     domain, algo = task.split("-")
@@ -73,6 +77,8 @@ print("Score result:\n",df)
 
 for file_path in logs_files:
     if "bc_model" in file_path:
+        continue
+    if "old" in file_path:
         continue
     task = os.path.split(os.path.split(file_path)[0])[1]
     domain, algo = task.split("-")
