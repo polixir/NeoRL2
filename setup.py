@@ -13,17 +13,17 @@ setup(
     name='neorl2',
     author='Polixir Technologies Co., Ltd.',
     py_modules=['neorl2'],
-    version="0.0.1",
-    url="https://agit.ai/Polixir/NeoRL2",
+    version="0.0.2",
+    url="https://github.com/polixir/NeoRL2",
     packages=find_packages(),
     install_requires=[
-        'numpy',
         'pandas',
         'scipy',
         'torch',
-        'gymnasium[all]==0.29.1',
         'onnxruntime',
         'matplotlib',
+        'gymnasium[all]==0.29.1',
+        'numpy==1.26.4',
     ],
     extras_require={
         'mujoco': ['mujoco-py']
