@@ -5,6 +5,7 @@
 
 The NEORL2 repository is an extension of the offline reinforcement learning benchmark [NeoRL](https://github.com/polixir/NeoRL). The NEORL2 repository contains datasets for training and corresponding environments for testing the trained policies. The current datasets are collected from seven open-source environments: Pipeline, Simglucose, RocketRecovery, RandomFrictionHopper, DMSD, Fusion and SafetyHalfCheetah tasks. We perform online training using reinforcement learning algorithms or PID policies on these tasks and then select suboptimal policies with returns ranging from 50% to 80% of the expert's return to generate offline datasets for each task. These suboptimal policy-sampled datasets better align with real-world task scenarios compared to random or expert policy datasets.
 
+The dataset is released in huggingface [neorl2](https://huggingface.co/datasets/polixirai/NeoRL2)
 ## Install NeoRL2 interface
 
 NeoRL2 interface can be installed as follows:
