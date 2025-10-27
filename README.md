@@ -5,6 +5,12 @@
 
 The NEORL2 repository is an extension of the offline reinforcement learning benchmark [NeoRL](https://github.com/polixir/NeoRL). The NEORL2 repository contains datasets for training and corresponding environments for testing the trained policies. The current datasets are collected from seven open-source environments: Pipeline, Simglucose, RocketRecovery, RandomFrictionHopper, DMSD, Fusion and SafetyHalfCheetah tasks. We perform online training using reinforcement learning algorithms or PID policies on these tasks and then select suboptimal policies with returns ranging from 50% to 80% of the expert's return to generate offline datasets for each task. These suboptimal policy-sampled datasets better align with real-world task scenarios compared to random or expert policy datasets.
 
+The following paper provides details about the NeoRL‑2 benchmark:
+
+> **Songyi Gao**, **Zuolin Tu**, **Rong‑Jun Qin**, **Yi‑Hao Sun**, **Xiong‑Hui Chen**, and **Yang Yu**.  
+> *NeoRL‑2: Near Real‑World Benchmarks for Offline Reinforcement Learning with Extended Realistic Scenarios.*  
+> *arXiv preprint* [arXiv:2503.19267](https://arxiv.org/abs/2503.19267), 2025.
+
 The dataset is released in huggingface [neorl2](https://huggingface.co/datasets/polixirai/NeoRL2)
 ## Install NeoRL2 interface
 
@@ -96,6 +102,22 @@ In NeoRL2, training data and validation data returned by `get_dataset()` functio
 **MuJoCo**: Todorov E, Erez T, Tassa Y. "Mujoco: A Physics Engine for Model-based Control." Proceedings of the 2012 IEEE/RSJ International Conference on Intelligent Robots and Systems, pp. 5026-5033, 2012. [paper](https://ieeexplore.ieee.org/abstract/document/6386109) [website](https://gym.openai.com/envs/#mujoco)
 
 **Gym**: Brockman, Greg, et al. "Openai gym." *arXiv preprint arXiv:1606.01540* (2016). [paper](https://arxiv.org/abs/1606.01540) [code](https://github.com/openai/gym)
+
+## Citation
+
+Please use the following bibtex for citations:
+
+```bibtex
+@misc{gao2025neorl2nearrealworldbenchmarks,
+      title={NeoRL-2: Near Real-World Benchmarks for Offline Reinforcement Learning with Extended Realistic Scenarios}, 
+      author={Songyi Gao and Zuolin Tu and Rong-Jun Qin and Yi-Hao Sun and Xiong-Hui Chen and Yang Yu},
+      year={2025},
+      eprint={2503.19267},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2503.19267}, 
+}
+```
 
 ## Licenses
 
